@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { @apply bg-chalk text-ink font-sans antialiased; }
+h1, h2, h3 { @apply font-display font-semibold tracking-tight; }
+:focus-visible { outline: 3px solid #D9A47C; outline-offset: 2px; }
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold transition active:scale-[.98] disabled:opacity-50; }
+  .btn-primary { @apply bg-ink text-white hover:bg-[#274c3e]; }
+  .btn-accent { @apply bg-marigold text-ink hover:brightness-95; }
+  .btn-ghost { @apply border border-ink/15 bg-white text-ink hover:bg-ink/5; }
+  .input { @apply w-full rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-ink placeholder:text-slate2/60; }
+  .card { @apply rounded-2xl border border-ink/10 bg-white; }
+  .eyebrow { @apply flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate2; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
+  .fade { animation: fade .5s ease both; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+}
+
+/* ---- scroll reveal, marquee, float ---- */
+.reveal { opacity: 0; transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); will-change: opacity, transform; }
+.reveal-up { transform: translateY(40px); }
+.reveal-left { transform: translateX(-56px); }
+.reveal-right { transform: translateX(56px); }
+.reveal-scale { transform: scale(.92); }
+.reveal.is-in { opacity: 1; transform: none; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee 34s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.floaty { animation: floaty 5s ease-in-out infinite; }
+/* ---- page load, micro-interactions, skeletons ---- */
+.page-in { animation: pageIn .5s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes pageIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.anim-up { animation: animUp .9s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes animUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+.anim-line { animation: animLine 1s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes animLine { from { transform: translateY(110%); } to { transform: none; } }
+.shimmer { background: linear-gradient(100deg, rgba(28,59,48,.06) 30%, rgba(28,59,48,.15) 50%, rgba(28,59,48,.06) 70%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.pop { animation: pop .38s cubic-bezier(.3,1.6,.5,1); }
+@keyframes pop { from { transform: scale(.6); } to { transform: scale(1); } }
+.ring-pulse { animation: ringPulse 2.4s ease-out infinite; }
+@keyframes ringPulse { from { box-shadow: 0 0 0 0 rgba(37,211,102,.55); } to { box-shadow: 0 0 0 18px rgba(37,211,102,0); } }
+.blob { animation: blob 14s ease-in-out infinite alternate; }
+@keyframes blob { from { transform: translate(0, 0) scale(1); } to { transform: translate(34px, -26px) scale(1.14); } }
+.btn-primary, .btn-accent { position: relative; overflow: hidden; }
+.btn-primary::after, .btn-accent::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.32), transparent); transform: skewX(-20deg); transition: left .6s ease; pointer-events: none; }
+.btn-primary:hover::after, .btn-accent:hover::after { left: 130%; }
+.accordion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
+.accordion.open { grid-template-rows: 1fr; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .marquee-track, .floaty, .page-in, .anim-up, .anim-line, .shimmer, .pop, .ring-pulse, .blob { animation: none; }
+  .btn-primary::after, .btn-accent::after, .accordion { transition: none; }
+}
